@@ -16,7 +16,7 @@ function Header() {
             <h1 className="text-2xl font-black text-slate-600 dark:text-slate-300">
               Dashbord
             </h1>
-            <p className="">
+            <p className="text-white/60 dark:text-slate-400 text-sm">
               Welcome back , Mayantha Sapumal's What's happening today
             </p>
           </div>
