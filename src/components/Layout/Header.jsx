@@ -1,5 +1,5 @@
 import React from "react";
-import { Filter, Menu, Plus, Search } from "lucide-react";
+import { Bell, ChevronDown, Filter, Menu, Plus, Search, Settings, Sun } from "lucide-react";
 function Header() {
   return (
     <div
@@ -45,6 +45,31 @@ function Header() {
                 <Plus className="w-5 h-5 "/>
                 <span className="text-sm  font-medium ">New</span>
             </button>
+            {/*Theme Toggle */}
+            <button className="p-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <Sun className="w-5 h-5  "/>
+            </button>
+             {/*Notifications */}
+             <button className=" relative p-2.5 rounded-xl  text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <Bell className="w-5 h-5  "/>
+                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">3</span>
+             </button>
+             {/*Settings */}
+             <button className="p-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <Settings className="w-5 h-5  "/>
+             </button>
+             {/*Profile  */}
+             <div className="flex items-center space-x-3 pl-3 border-1 border-slate-200 dark:border-slate-700">
+                <img src="./src/images/img.png" 
+                alt="user"
+                className="w-8 h-8 rounded-full ring-2 ring-blue-500" />
+                <div className="hidden md:block ">
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Mayantha Sapumal</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Administrator</p>
+                </div>
+                <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-300"/>
+
+             </div>
         </div>
       </div>
     </div>
