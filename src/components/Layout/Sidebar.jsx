@@ -13,7 +13,7 @@ import {
   Settings,
   ChevronDown,
 } from "lucide-react";
-import { React } from "react";
+import { React,useState } from "react";
 
 const menuItems = [
   {
@@ -27,16 +27,18 @@ const menuItems = [
     id: "anaalytics",
     icon: BarChart3,
     label: "Analytics",
+   
     submenu: [
-      { id: "overview", name: "Overview" },
-      { id: "reports", name: "Reports" },
-      { id: "insights", name: "Insights" },
+      { id: "overview", label: "Overview" },
+      { id: "reports", label: "Reports" },
+      { id: "insights", label: "Insights" },
     ],
   },
   {
     id: "users",
     icon: Users,
     label: "Users",
+    count: "1.2k",
     submenu: [
       { id: "all-users", label: "All Users" },
       { id: "roles", label: "Roles & Permissions" },
@@ -89,8 +91,23 @@ const menuItems = [
 ];
 
 function Sidebar({ collapsed, onToggle, currentPage, onPageChange }) {
+   const [expandedItems, setExpandedItems] = useState(new Set(["analytics"]));
+  const toggleExpended = (itemid)=>{
+    const newExpanded = new Set(expandedItems);
+
+    if(newExpanded.has(itemid)){
+      newExpanded.delete(itemid);
+    }else{
+      newExpanded.add(itemid);
+    }
+    setExpandedItems(newExpanded);
+  }
   return (
-    <div className={`${collapsed ? 'w-20' : 'w-64'}  transition duration-300 ease-in-out bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col relative z-10`}>
+    <div
+      className={`${
+        collapsed ? "w-20" : "w-64"
+      }  transition-all duration-300 ease-in-out bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-700/50 flex flex-col relative z-10`}
+    >
       {/* Sidebar content */}
       <div className="p-6 border-b border-slate-200/50 dark:border-slate-700/50">
         <div className="flex items-center space-x-3">
@@ -98,53 +115,84 @@ function Sidebar({ collapsed, onToggle, currentPage, onPageChange }) {
             <Apple className="w-6 h-6 text-white" />
           </div>
           {/*Conditional Rendering */}
-         {!collapsed &&(
-           <div>
-            <h1 className="text-xl font-bold text-slate-800 dark:text-white">
-              Simple
-            </h1>
-            <p className="text-xs text-slate-300 dark:text-slate-400">
-              Admin panel
-            </p>
-          </div>
-         )}
+          {!collapsed && (
+            <div>
+              <h1 className="text-xl font-bold text-slate-800 dark:text-white">
+                Simple
+              </h1>
+              <p className="text-xs text-slate-300 dark:text-slate-400">
+                Admin panel
+              </p>
+            </div>
+          )}
         </div>
       </div>
       {/*navigationbar*/}
       <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
         {menuItems.map((item) => (
-          <div key={item.id || item.label}>
+          <div key={item.id }>
             <button
               className={`w-full flex items-center justify-between p-3 rounded-xl  hover:bg-slate-100 dark:hover:bg-slate-800
-          transition-all duration-200 ${currentPage ===itemsitem.label ? 'bg-blue-100 dark:bg-slate-800' : ''} `}
+          transition-all duration-200 ${
+            currentPage === item.id || item.active
+              ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg  shadow-blue-500/25"
+              : "dark:text-slate-600  hover:bg-slate-100  dark:hover:bg-slate-800/50 "
+          } `}
+           onClick={() =>{
+            if(item.submenu){
+             toggleExpended(item.id);
+            }else{
+              onPageChange(item.id);
+            }
+           }}
             >
               <div className="flex items-center space-x-3 cursor-pointer ">
-                <item.icon className="w-5 h-5 text-slate-600 dark:text-slate-400 " />
-                <span className="text-sm font-medium ml-2 text-slate-700 dark:text-slate-300">
-                  {item.label}
-                </span>
-                {item.badge && (
-                  <span className="px-2 py-2  text-xs bg-red-500 text-white rounded-full ">
-                    {item.badge}
+                <item.icon
+                  className={`w-5 h-5 text-slate-600 dark:text-slate-400 `}
+                />
+                <>
+                  {!collapsed && (
+                    <>
+                    <span className="text-sm font-medium ml-2 text-slate-700 dark:text-slate-300">
+                    {item.label}
                   </span>
+                  {item.badge && (
+                    <span className="px-2 py-2  text-xs bg-red-500 text-white rounded-full ">
+                      {item.badge}
+                    </span>
+                  )}
+                  {item.count && (
+                    <span className="px-2 py-1  text-xs bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-300 rounded-full ">
+                      {item.count}
+                    </span>
+                  )}
+                    </>
                 )}
-                {item.count && (
-                  <span className="px-2 py-1  text-xs bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-300 rounded-full ">
-                    {item.count}
-                  </span>
-                )}
+                  
+                  
+                </>
               </div>
-              {item.submenu && (
-                <ChevronDown className="w-4 h-4 text-slate-400 transition-transform " />
+              {!collapsed && item.submenu &&   (
+                <ChevronDown className={`w-4 h-4  transition-transform`} />
               )}
             </button>
             {/* Submenu */}
+            {!collapsed && item.submenu && expandedItems.has(item.id) &&(
+              <div className="mt-2 pl-8 space-y-1">
+                {item.submenu.map((subitem) => (
+                  <button className="w-full text-left p-2 text-sm text-slate-600  
+                  dark:text-slate-400 hover;text-slate-800 dark:hover:text-slate-200 
+                  hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-lg transition-all">{subitem.label}</button>
+                ))}
+              </div>
+            )}
             
           </div>
         ))}
       </nav>
       {/*User Profile */}
-      <div className="p-4 border-t border-slate-200/50 drak:border-slate-700/50">
+      {!collapsed && (
+        <div className="p-4 border-t border-slate-200/50 drak:border-slate-700/50">
         <div className="flex items-center space-x-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
           <img
             src="./src/images/img.png"
@@ -161,6 +209,7 @@ function Sidebar({ collapsed, onToggle, currentPage, onPageChange }) {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }
