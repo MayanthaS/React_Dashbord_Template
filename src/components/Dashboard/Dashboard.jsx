@@ -1,9 +1,16 @@
 import React from 'react'
+import StatsGrid from './StatsGrid'
+import ChartSection from './ChartSection'
 
 function Dashboard() {
   return (
-    <div>
-      Dashboard
+    <div className='space-y-6'>
+      {/* Stats Grid  */}
+      <StatsGrid/>
+
+      {/* Chart Section  */}
+      <ChartSection/>
+     
     </div>
   )
 }
