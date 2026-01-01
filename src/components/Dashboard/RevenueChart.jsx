@@ -38,7 +38,7 @@ function RevenueChart() {
         {/* Legend */}
         <div className="flex  flex-lgitems-center space-x-4">
           <div className="flex items-center space-x-2">
-            <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
+            <span className="w-3 h-3 bg-blue-600 rounded-full"></span>
             <span className="text-sm text-slate-600 dark:text-slate-400">
               Revenue
             </span>
